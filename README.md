@@ -46,9 +46,7 @@
 
 ### Step 1: Update `env file`
 
-YOUTUBE_API_KEY=A
-SPOTIFY_CLIENT_ID=
-SPOTIFY_CLIENT_SECRET=
+
 MONGO_URI=
 TOKEN=
 
