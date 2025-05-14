@@ -46,8 +46,6 @@
 
 ### Step 1: Update `env file`
 
-
-MONGO_URI=
 TOKEN=
 
 ### Step 2: Add Build and Start Commands
