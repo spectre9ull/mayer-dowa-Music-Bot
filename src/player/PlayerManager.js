@@ -6,7 +6,7 @@ const { YtDlpPlugin } = require('@distube/yt-dlp');
 const fs = require("fs");
 const { EmbedBuilder } = require('discord.js');
 require('dotenv').config();
-
+const path = require('path');
 class PlayerManager {
     constructor(client, distubeOptions) {
         this.client = client;
@@ -16,7 +16,10 @@ class PlayerManager {
         this.distube = new DisTube(client, {
           ...distubeOptions,
           plugins: [
-            new YtDlpPlugin(),
+            new YtDlpPlugin({
+              update: false, 
+              cookies: path.join(__dirname, '../config/cookies.txt'), 
+            }),
           ],
         });
         
