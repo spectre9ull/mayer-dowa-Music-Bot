@@ -1,54 +1,53 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const { distubeOptions } = require('./src/config/config.js');
-const fs = require('fs');
-const path = require('path');
-const PlayerManager = require('./src/player/PlayerManager.js');
-const { printWatermark } = require('./src/config/type.js');
-const intents = [
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.GuildMembers,
-  GatewayIntentBits.GuildVoiceStates,
-  GatewayIntentBits.GuildMessages
-];
-
-const client = new Client({ intents });
-printWatermark();
-client.commands = new Collection();
-client.playerManager = new PlayerManager(client, distubeOptions);
-client.playerManager.distube.setMaxListeners(20);
-const commandsPath = path.join(__dirname, './src/commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-  const command = require(path.join(commandsPath, file));
-  client.commands.set(command.data.name, command);
-}
-
-
-const eventsPath = path.join(__dirname, './src/events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-  const filePath = path.join(eventsPath, file);
-  const event = require(filePath);
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, client));
-  } else {
-    client.on(event.name, (...args) => event.execute(...args, client));
+{
+  "name": "discord-music-bot",
+  "version": "4.0.1",
+  "description": "Advanced Discord music bot with slash commands and DisTube integration",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "npm install && npm audit fix",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.8.2",
+    "@discordjs/rest": "^1.7.0",
+    "@discordjs/voice": "^0.17.0",
+    "@distube/yt-dlp": "^2.0.1",
+    "@distube/ytdl-core": "^4.16.9",
+    "discord.js": "^14.15.3",
+    "distube": "^5.0.1",
+    "dotenv": "^16.4.5",
+    "ffmpeg-static": "^5.2.0",
+    "libsodium-wrappers": "^0.7.13",
+    "prism-media": "^1.3.5",
+    "express": "^4.18.2",
+    "wokcommands": "^1.5.3",
+    "play-dl": "^1.9.6"
+  },
+  "keywords": [
+    "discord",
+    "music-bot",
+    "javascript",
+    "nodejs",
+    "distube",
+    "slash-commands"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/your-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/your-repo/issues"
+  },
+  "homepage": "https://github.com/yourusername/your-repo#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
-
-
-const express = require("express");
-const app = express();
-const port = 3000;
-app.get('/', (req, res) => {
-    const imagePath = path.join(__dirname, 'index.html');
-    res.sendFile(imagePath);
-});
-app.listen(port, () => {
-    console.log(`🔗 Listening to GlaceYT : http://localhost:${port}`);
-});
-
-
-client.login(process.env.TOKEN);
